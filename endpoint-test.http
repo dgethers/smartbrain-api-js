@@ -32,3 +32,16 @@ content-type: application/json
 ###
 # list all users in database
 GET http://localhost:3000/
+
+###
+# get profile for single user
+GET http://localhost:3000/profile/123
+
+###
+# add an image entry for a user
+PUT http://localhost:3000/image
+content-type: application/json
+
+{
+    "id": "123"
+}

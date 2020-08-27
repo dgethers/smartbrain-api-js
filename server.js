@@ -46,6 +46,36 @@ app.post("/register", (request, response) => {
   response.json(database.users[database.users.length - 1]);
 });
 
+app.get("/profile/:id", (request, response) => {
+  const { id } = request.params;
+  let found = false;
+  database.users.forEach((user) => {
+    if (user.id === id) {
+      found = true;
+      return response.json(user);
+    }
+  });
+  if (!found) {
+    response.status(404).json("not found");
+  }
+});
+
+app.put("/image", (request, response) => {
+  const { id } = request.body;
+  console.log('id', id);
+  let found = false;
+  database.users.forEach((user) => {
+    if (user.id === id) {
+      found = true;
+      user.entries++;
+      return response.json(user);
+    }
+  });
+  if (!found) {
+    response.status(404).json("not found");
+  }
+});
+
 app.listen(3000, () => {
   console.log("app is running on port 3000");
 });
