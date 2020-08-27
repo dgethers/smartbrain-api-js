@@ -1,0 +1,34 @@
+###
+# sign in request with correct credentials
+POST http://localhost:3000/signin
+content-type: application/json
+
+{
+    "email": "avatar-korra@gmail.com",
+    "password": "water"
+}
+
+###
+# sign in request with incorrect credentials
+POST http://localhost:3000/signin
+content-type: application/json
+
+{
+    "email": "avatar-ang@gmail.com",
+    "password": "air"
+}
+
+###
+# register new user
+POST http://localhost:3000/register
+content-type: application/json
+
+{
+    "name": "Roku",
+    "email": "avatar-roku@gmail.com",
+    "password": "fire"
+}
+
+###
+# list all users in database
+GET http://localhost:3000/
