@@ -39,9 +39,9 @@ GET http://localhost:3000/profile/123
 
 ###
 # add an image entry for a user
-PUT http://localhost:3000/image
+PUT http://localhost:3000/findface
 content-type: application/json
 
 {
-    "id": "123"
+    "email": "avatar-korra@gmail.com"
 }

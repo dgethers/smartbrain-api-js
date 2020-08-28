@@ -1,8 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt-nodejs");
+const cors = require("cors");
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = {
   users: [
@@ -22,12 +25,15 @@ app.get("/", (request, response) => {
 });
 
 app.post("/signin", (request, response) => {
-  const user = database.users[0];
+  const dbUser = database.users[0];
+  const requestUser = request.body;
+  console.log("requestUser", requestUser);
+
   if (
-    request.body.email === user.email &&
-    request.body.password === user.password
+    requestUser.email === dbUser.email &&
+    requestUser.password === dbUser.password
   ) {
-    response.json("success");
+    response.json(dbUser);
   } else {
     response.status(403).json("error loggin in");
   }
@@ -46,11 +52,10 @@ app.post("/register", (request, response) => {
   response.json(database.users[database.users.length - 1]);
 });
 
-app.get("/profile/:id", (request, response) => {
-  const { id } = request.params;
+app.get("/profile/:userId", (request, response) => {
   let found = false;
   database.users.forEach((user) => {
-    if (user.id === id) {
+    if (user.id === request.params.userId) {
       found = true;
       return response.json(user);
     }
@@ -60,20 +65,15 @@ app.get("/profile/:id", (request, response) => {
   }
 });
 
-app.put("/image", (request, response) => {
-  const { id } = request.body;
-  console.log('id', id);
-  let found = false;
+app.put("/findface", (request, response) => {
   database.users.forEach((user) => {
-    if (user.id === id) {
+    if (user.email === request.body.email) {
       found = true;
       user.entries++;
-      return response.json(user);
+      response.json(user);
     }
   });
-  if (!found) {
-    response.status(404).json("not found");
-  }
+  response.status(404).json("not found");
 });
 
 app.listen(3000, () => {
