@@ -2,6 +2,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
+const knex = require("knex");
+
+const db = knex({
+  client: "pg",
+  connection: {
+    host: "127.0.0.1",
+    user: "postgres",
+    password: "password",
+    database: "smartbrain",
+  },
+});
+
+db.select("*").from("users").then(console.log);
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,39 +54,45 @@ app.post("/signin", (request, response) => {
 
 app.post("/register", (request, response) => {
   const { email, name, password } = request.body;
-  database.users.push({
-    id: "125",
-    name: name,
-    email: email,
-    password: password,
-    entries: 0,
-    joined: new Date(),
-  });
-  response.json(database.users[database.users.length - 1]);
+  db("users")
+    .returning("*")
+    .insert({
+      email: email,
+      name: name,
+      joined: new Date(),
+    })
+    .then((user) => {
+      response.json(user);
+    })
+    .catch((err) => response.status(400).json("unable to register"));
 });
 
 app.get("/profile/:userId", (request, response) => {
-  let found = false;
-  database.users.forEach((user) => {
-    if (user.id === request.params.userId) {
-      found = true;
-      return response.json(user);
-    }
-  });
-  if (!found) {
-    response.status(404).json("not found");
-  }
+  const { userId } = request.params;
+  db.select("*")
+    .from("users")
+    .where({
+      id: userId,
+    })
+    .then((user) => {
+      console.log("user", user);
+      if (user.length) {
+        response.json(user);
+      } else {
+        response.status(404).json("Not found");
+      }
+    })
+    .catch((err) => response.status(400).json(err));
 });
 
 app.put("/findface", (request, response) => {
-  database.users.forEach((user) => {
-    if (user.email === request.body.email) {
-      found = true;
-      user.entries++;
-      response.json(user);
-    }
-  });
-  response.status(404).json("not found");
+  const { email } = request.body;
+  db("users")
+    .where("email", "=", email)
+    .increment("entries", 1)
+    .returning("entries")
+    .then((entries) => response.json(entries))
+    .catch((err) => response.status(400).json(err));
 });
 
 app.listen(3000, () => {
