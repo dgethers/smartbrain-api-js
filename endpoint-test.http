@@ -14,8 +14,8 @@ POST http://localhost:3000/signin
 content-type: application/json
 
 {
-    "email": "avatar-ang@gmail.com",
-    "password": "air"
+    "email": "avatar-korra@gmail.com",
+    "password": "metal"
 }
 
 ###
@@ -38,6 +38,17 @@ content-type: application/json
     "name": "Ang",
     "email": "avatar-ang@gmail.com",
     "password": "air"
+}
+
+###
+# register yet another new user
+POST http://localhost:3000/register
+content-type: application/json
+
+{
+    "name": "Korra",
+    "email": "avatar-korra@gmail.com",
+    "password": "water"
 }
 
 ###
