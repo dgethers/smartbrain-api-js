@@ -52,10 +52,6 @@ content-type: application/json
 }
 
 ###
-# list all users in database
-GET http://localhost:3000/
-
-###
 # get profile for single user
 GET http://localhost:3000/profile/1
 

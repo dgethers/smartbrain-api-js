@@ -23,10 +23,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/", (request, response) => {
-  response.send(database.users);
-});
-
 app.post("/signin", (request, response) => {
   signin.handleSignin(request, response, db, bcrypt);
 });
