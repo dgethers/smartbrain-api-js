@@ -13,8 +13,8 @@ const db = knex({
   client: "pg",
   connection: {
     host: "127.0.0.1",
-    user: "postgres",
-    password: "password",
+    user: "smartbrain",
+    password: "secret",
     database: "smartbrain",
   },
 });
@@ -36,7 +36,7 @@ app.get("/profile/:userId", (request, response) => {
 });
 
 app.put("/findface", (request, response) => {
-  findface.handleFindFace(request, response, db);
+  findFace.handleApiCall(request, response, db);
 });
 
 app.listen(3000, () => {

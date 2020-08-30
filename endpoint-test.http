@@ -61,5 +61,5 @@ PUT http://localhost:3000/findface
 content-type: application/json
 
 {
-    "email": "avatar-ang@gmail.com"
+    "imageUrl": "https://southkerrycaller.files.wordpress.com/2014/03/family.jpg"
 }
