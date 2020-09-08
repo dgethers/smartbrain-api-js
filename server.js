@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const cors = require("cors");
 const knex = require("knex");
 const dotenv = require('dotenv');
+const {ClarifaiStub} = require("clarifai-nodejs-grpc");
+const grpc = require("@grpc/grpc-js");
 
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
@@ -21,9 +23,11 @@ const db = knex({
     connection: process.env.DATABASE_URL,
 });
 
-const clarifaiApp = new Clarifai.App({
-    apiKey: `${process.env.CLARIFAI_API_KEY}`,
-});
+const clarifaiStub = ClarifaiStub.json();
+const stubMetadata = new grpc.Metadata();
+stubMetadata.set("authorization", `Key ${process.env.CLARIFAI_API_KEY}`);
+
+const clarifaiGRPC = {clarifaiStub, stubMetadata};
 
 const app = express();
 app.use(bodyParser.json());
@@ -42,7 +46,7 @@ app.get("/profile/:userId", (request, response) => {
 });
 
 app.put("/findface", (request, response) => {
-    findFace.handleApiCall(request, response, clarifaiApp);
+    findFace.handleApiCall(request, response, clarifaiGRPC);
 });
 
 const PORT = process.env.PORT || 3000
