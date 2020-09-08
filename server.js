@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require('bcrypt');
 const cors = require("cors");
 const knex = require("knex");
 const dotenv = require('dotenv');
@@ -10,7 +10,7 @@ const signin = require("./controllers/signin");
 const profile = require("./controllers/profile");
 const findFace = require("./controllers/findface");
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 

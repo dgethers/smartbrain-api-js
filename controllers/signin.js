@@ -7,20 +7,26 @@ const handleSignin = (request, response, db, bcrypt) => {
     .from("login")
     .where("email", "=", email)
     .then((data) => {
-      const isValid = bcrypt.compareSync(password, data[0].hash);
-      if (isValid) {
-        return db
-          .select("*")
-          .from("users")
-          .where("email", "=", email)
-          .then((user) => {
-            response.json(user[0]);
-          })
-          .catch((err) => response.status(403).json("unable to get user"));
-      }
-      response.status(403).json("wrong credentials");
-    })
-    .catch((err) => response.status(403).json("wrong credentials"));
+        bcrypt.compare(password, data[0].hash)
+            .then(isValid => {
+                if (isValid) {
+                    return db
+                        .select("*")
+                        .from("users")
+                        .where("email", "=", email)
+                        .then((user) => {
+                            response.json(user[0]);
+                        })
+                        .catch((err) => response.status(403).json("unable to get user"));
+                } else {
+                    response.status(403).json("wrong credentials");
+                }
+            })
+            .catch(err => console.log('bcrypt compare', err));
+    }).catch((err) => {
+        console.log('db user lookup', err);
+        response.status(403).json("wrong credentials");
+    });
 };
 
 module.exports = {
