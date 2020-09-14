@@ -2,18 +2,21 @@
 const dotenv = require('dotenv');
 module.exports = require('knex');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 dotenv.config();
-console.log('DATABASE_URL', process.env.DATABASE_URL);
-console.log('CLARIFAI_API_KEY', process.env.CLARIFAI_API_KEY);
-module.exports = {
 
-    client: "pg",
-    connection: process.env.DATABASE_URL,
-    pool: {
-        min: 2,
-        max: 10
+module.exports = {
+    development: {
+        client: "pg",
+        connection: {
+            host: '127.0.0.1',
+            user: process.env.LOCAL_DB_USER,
+            password: process.env.LOCAL_DB_PASSWORD,
+            database: process.env.LOCAL_DATABASE
+        },
     },
-    migrations: {
-        tableName: 'knex_migrations'
+    production: {
+        client: "pg",
+        connection: process.env.DATABASE_URL + '?ssl=true',
     }
 };
