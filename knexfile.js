@@ -1,4 +1,3 @@
-// Update with your config settings.
 const dotenv = require('dotenv');
 module.exports = require('knex');
 
