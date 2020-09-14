@@ -14,6 +14,12 @@ module.exports = {
             password: process.env.LOCAL_DB_PASSWORD,
             database: process.env.LOCAL_DATABASE
         },
+        migrations: {
+            directory: "./db/migrations"
+        },
+        seeds: {
+            directory: "./db/seeds"
+        }
     },
     production: {
         client: "pg",
