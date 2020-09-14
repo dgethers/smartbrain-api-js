@@ -12,16 +12,26 @@ const signin = require("./controllers/signin");
 const profile = require("./controllers/profile");
 const findFace = require("./controllers/findface");
 
-if (process.env.NODE_ENV !== 'production') {
+const environment = process.env.NODE_ENV || "development"
+let db;
+if (environment === "development") {
     dotenv.config();
+    db = knex({
+        client: "pg",
+        connection: {
+            host: '127.0.0.1',
+            user: process.env.LOCAL_DB_USER,
+            password: process.env.LOCAL_DB_PASSWORD,
+            database: process.env.LOCAL_DATABASE
+    }});
+} else {
+    db = knex({
+        client: "pg",
+        connection: process.env.DATABASE_URL,
+    });
 }
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-
-const db = knex({
-    client: "pg",
-    connection: process.env.DATABASE_URL,
-});
 
 const clarifaiStub = ClarifaiStub.json();
 const stubMetadata = new grpc.Metadata();
