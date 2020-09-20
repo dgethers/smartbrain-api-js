@@ -23,7 +23,7 @@ const handleRegister = (request, response, db, bcrypt) => {
                               joined: new Date(),
                           })
                           .then((user) => {
-                              response.json(user);
+                              response.json(user[0]);
                           });
                   })
                   .then(trx.commit)
