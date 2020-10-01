@@ -5,7 +5,7 @@ exports.up = (knex) => {
             if (!exist) {
                 return knex.schema
                     .table("users", (table) => {
-                        table.string('hash', 100)
+                        table.string('hash', 100);
 
                     })
                     .raw("UPDATE users\n" +
@@ -22,7 +22,7 @@ exports.down = function (knex) {
         .then(exist => {
             if (exist) {
                 return knex.schema.table("users", (table) => {
-                    table.dropColumn('hash')
+                    table.dropColumn('hash');
                 })
             }
         });
