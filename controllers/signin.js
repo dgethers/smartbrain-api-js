@@ -4,7 +4,6 @@ const handleSignin = (request, response, db, bcrypt) => {
     return response.status(400).json("incorrect form submission");
   }
 
-  //todo: build json object to return without hash
   db.select("*")
     .from("users")
     .where("email", "=", email)
@@ -12,7 +11,13 @@ const handleSignin = (request, response, db, bcrypt) => {
         bcrypt.compare(password, data[0].hash)
             .then(isValid => {
                 if (isValid) {
-                    return response.json(data[0])
+                    const {id, name, email, joined} = data[0];
+                    return response.json({
+                        id: id,
+                        name: name,
+                        email: email,
+                        joined: joined
+                    })
                 } else {
                     response.status(403).json("wrong credentials");
                 }
