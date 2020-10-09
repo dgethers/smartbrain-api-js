@@ -3,21 +3,16 @@ const handleSignin = (request, response, db, bcrypt) => {
   if (!email || !password) {
     return response.status(400).json("incorrect form submission");
   }
-  db.select("email", "hash")
-    .from("login")
+
+  //todo: build json object to return without hash
+  db.select("*")
+    .from("users")
     .where("email", "=", email)
     .then((data) => {
         bcrypt.compare(password, data[0].hash)
             .then(isValid => {
                 if (isValid) {
-                    return db
-                        .select("*")
-                        .from("users")
-                        .where("email", "=", email)
-                        .then((user) => {
-                            response.json(user[0]);
-                        })
-                        .catch((err) => response.status(403).json("unable to get user"));
+                    return response.json(data[0])
                 } else {
                     response.status(403).json("wrong credentials");
                 }
