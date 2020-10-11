@@ -56,7 +56,7 @@ app.get("/profile/:userId", (request, response) => {
 });
 
 app.put("/findface", (request, response) => {
-    findFace.handleApiCall(request, response, clarifaiGRPC);
+    findFace.handleApiCall(request, response, clarifaiGRPC, db);
 });
 
 const PORT = process.env.PORT || 3000
