@@ -38,10 +38,9 @@ const handleApiCall = (request, response, clarifaiGRPC, db) => {
                                 upload_datetime: new Date()
                                 })
                                 .into('photo_history')
-                                .then(row => {
-                                        response.status(200).json(row.analytics);
-                                    }
-                                ).catch(console.log);
+                                .catch(err => console.log(err));
+
+                            response.status(200).json(res.outputs[0].data.regions)
                         }
                     );
                 }
