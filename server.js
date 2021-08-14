@@ -55,7 +55,12 @@ app.get("/profile/:userId", (request, response) => {
     profile.handleProfile(request, response, db);
 });
 
+
 app.put("/findface", (request, response) => {
+    findFace.handleApiCall(request, response, clarifaiGRPC, db);
+});
+
+app.get("/photohistory/user/:userId", (request, response) => {
     findFace.handleApiCall(request, response, clarifaiGRPC, db);
 });
 
